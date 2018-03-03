@@ -1,0 +1,31 @@
+---
+layout: default
+---
+  {% if site.posts.size > 0 %}
+  <article class="uk-article uk-flex uk-flex-column uk-width-1-2 uk-align-center" uk-grid>
+      {% for post in site.posts %}
+      <div>
+        {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
+        <h1 class="uk-article-title">
+          <a class="uk-link-reset" href="{{ post.url | relative_url }}">
+            {{ post.title | escape }}
+          </a>
+        </h1>
+        <p class="uk-article-meta"> Written by
+          <a href="#">{{ site.title | escape }}</a>
+          {{ post.date | date: date_format }}
+        </p>
+
+        <img class="uk-width-xlarge" src="/assets/Gimp-Love.png" alt="background-image">
+        
+        {{ post.excerpt }}
+
+        <div class="uk-grid-small uk-child-width-auto" uk-grid>
+            <div>
+                <a class="uk-button uk-button-text" href="{{ post.url | relative_url }}">Read more</a>
+            </div>
+        </div>
+      </div>
+      {% endfor %}
+  </article>
+  {% endif %}

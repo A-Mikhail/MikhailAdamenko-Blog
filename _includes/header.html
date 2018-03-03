@@ -1,0 +1,23 @@
+<header role="banner">
+  <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
+    <div class="uk-navbar-center">
+
+      <div class="uk-navbar-center-left"><div>
+        <ul class="uk-navbar-nav">
+          <li class="uk-active"><a href="{{ "/" | relative_url }}">Home</a></li>
+          <li><a href="{{ "/articles" | relative_url }}">Articles</a></li>
+        </ul>
+      </div></div>
+        
+      <a class="uk-text-bold uk-navbar-item uk-logo ma-logo" rel="author" href="#">{{ site.title | escape }}</a>
+        
+      <div class="uk-navbar-center-right"><div>
+        <ul class="uk-navbar-nav">
+          <li><a href="{{ "/about" | relative_url }}">About</a></li>
+            <li><a href="#">RSS</a></li>
+          </ul>
+      </div></div>
+  
+    </div>
+  </nav>
+</header>
