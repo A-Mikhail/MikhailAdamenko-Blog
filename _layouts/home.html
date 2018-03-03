@@ -2,9 +2,9 @@
 layout: default
 ---
   {% if site.posts.size > 0 %}
-  <article class="uk-article uk-flex uk-flex-column uk-width-1-2 uk-align-center" uk-grid>
+  <article class="uk-article uk-grid-small uk-flex uk-flex-column uk-width-auto uk-width-1-2@s uk-align-center" uk-grid>
       {% for post in site.posts %}
-      <div>
+      <div class="uk-margin uk-padding-small">
         {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
         <h1 class="uk-article-title">
           <a class="uk-link-reset" href="{{ post.url | relative_url }}">
@@ -18,7 +18,9 @@ layout: default
 
         <img class="uk-width-xlarge" src="/assets/Gimp-Love.png" alt="background-image">
         
-        {{ post.excerpt }}
+        <p class="uk-text-lead">
+          {{ post.excerpt }}
+        </p>
 
         <div class="uk-grid-small uk-child-width-auto" uk-grid>
             <div>

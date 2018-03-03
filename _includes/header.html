@@ -1,5 +1,30 @@
 <header role="banner">
-  <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
+  <!-- Navbar button and menu for mobile -->
+  <nav class="uk-navbar-container uk-navbar-transparent uk-hidden@s" uk-navbar>
+      <div class="uk-navbar-left">
+        <div class="uk-offcanvas-content">
+          <a class="uk-navbar-toggle" uk-navbar-toggle-icon href="#offcanvas-usage" uk-toggle></a>
+          
+          <div id="offcanvas-usage" uk-offcanvas>
+            <div class="uk-offcanvas-bar uk-flex uk-flex-column">
+              <button class="uk-offcanvas-close" type="button" style="color: #000;" uk-close></button>
+              
+              <ul class="uk-nav uk-nav-primary uk-nav-center uk-margin-auto-vertical">
+                <li><a href="{{ "/" | relative_url }}" style="color: #000;">Home</a></li>
+                <li><a href="{{ "/articles" | relative_url }}" style="color: #000;">Articles</a></li>
+                <li><a href="{{ "/about" | relative_url }}" style="color: #000;">About</a></li>
+                <li><a href="#" style="color: #000;">RSS</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a class="uk-text-bold uk-navbar-item uk-logo ma-logo" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+  </nav>
+
+  <!-- Navbar menu for small to large screens -->
+  <nav class="uk-navbar-container uk-navbar-transparent uk-visible@s" uk-navbar>
     <div class="uk-navbar-center">
 
       <div class="uk-navbar-center-left"><div>
@@ -9,7 +34,7 @@
         </ul>
       </div></div>
         
-      <a class="uk-text-bold uk-navbar-item uk-logo ma-logo" rel="author" href="#">{{ site.title | escape }}</a>
+      <a class="uk-text-bold uk-navbar-item uk-logo ma-logo" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
         
       <div class="uk-navbar-center-right"><div>
         <ul class="uk-navbar-nav">

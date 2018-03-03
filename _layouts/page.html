@@ -1,8 +1,10 @@
 ---
 layout: default
 ---
-<article class="uk-article uk-flex uk-flex-column uk-width-1-2 uk-align-center" uk-grid>
+<article class="uk-padding-small uk-article uk-grid-small uk-flex uk-flex-column uk-width-auto uk-width-1-2@s uk-align-center" uk-grid>
   <h1 class="uk-article-title">{{ page.title | escape }}</h1>
+
+  <a href="#" class="uk-position-center-left" style="z-index: 980;" uk-sticky="bottom: #offset" uk-totop uk-scroll></a>
 
   <p class="uk-text-lead">
     {{ content }}

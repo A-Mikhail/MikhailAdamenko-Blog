@@ -9,3 +9,8 @@ html, body
 {
   color: #4B1EA5 !important;  
 }
+
+/* fix ussiue of dark navbar  */
+.uk-offcanvas-bar {
+  background: #fff !important;
+}
