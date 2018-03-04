@@ -1,8 +1,7 @@
 ---
 layout: default
+comments: true
 ---
-<a href="#"  style="z-index: 980; height: 100%;" uk-sticky="bottom: #offset" uk-totop uk-scroll></a>
-
 <article class="uk-padding-small uk-article uk-grid-small uk-flex uk-flex-column uk-width-auto uk-width-1-2@s uk-align-center" uk-grid itemscope itemtype="http://schema.org/BlogPosting">
 
   <header>
@@ -13,7 +12,7 @@ layout: default
         {{ page.date | date: date_format }}
       </time>
       {% if page.author %}
-        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author }}</span></span>
+        <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author }}</span></span>
       {% endif %}
     </p>
   </header>
@@ -23,6 +22,4 @@ layout: default
   </div>
 
   {% include disqus_comments.html %}
-
-  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
 </article>

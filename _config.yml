@@ -6,6 +6,9 @@ description: >-
 baseurl: ""
 url: "http://mikhailadamenko.design/"
 github_username:  A-Mikhail
+disqus:
+  shortname: mikhailadamenko
+rss: rss
 
 # Build settings
 markdown: kramdown

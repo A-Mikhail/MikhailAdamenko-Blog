@@ -1,16 +1,20 @@
-html, body
+*::selection 
 {
-  height: 100%;
-  width: 100%;
-  background-color: #fff;
+  background-color: #aad1cd !important;
+  color: white;
 }
 
 .ma-logo
 {
-  color: #4B1EA5 !important;  
+  color: #FF9494!important;
 }
 
 /* fix ussiue of dark navbar  */
 .uk-offcanvas-bar {
   background: #fff !important;
+}
+
+.uk-navbar-container 
+{
+  color: #538000 !important;
 }
