@@ -1,21 +1,22 @@
 <footer>
-    <div class="uk-section uk-section-primary">
-        <div class="uk-container">
-    
-            <h3>Section</h3>
-    
-            <div class="uk-grid-match uk-child-width-1-3@m" uk-grid>
-                <div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                </div>
-                <div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                </div>
-                <div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                </div>
+    <div class="uk-section uk-section-xsmall uk-section">
+        <div class="uk-container">         
+            <div class="uk-flex-center uk-child-width-1-3@m uk-text-center" uk-grid>
+                <dl class="uk-description-list">
+                    <dt>Contact me</dt>
+                    <dd>{{ site.email }}</dd>
+                </dl>
+
+                <dl class="uk-grid-divider uk-description-list">
+                    <dt>Links</dt>
+                    <dd>Github: <a href="https://github.com/{{ site.github_username }}">{{ site.github_username }}</a></dd>
+                </dl>
+
+                <dl class="uk-grid-divider uk-description-list">
+                    <dd class="ma-logo-color uk-text-bold">{{ site.title }}</dd>
+                    <dd class="uk-text-meta">This is not end, yet.</dd>
+                </dl>
             </div>
-    
         </div>
     </div>
 </footer>

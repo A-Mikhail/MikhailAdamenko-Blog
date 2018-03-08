@@ -1,12 +1,21 @@
+html {
+  height: 100%;
+}
+body {
+  display: flex ;
+  flex-direction: column;
+  height: 100%;
+}
+
 *::selection 
 {
   background-color: #aad1cd !important;
   color: white;
 }
 
-.ma-logo
+.ma-logo-color
 {
-  color: #FF9494!important;
+  color: #FF9494 !important;
 }
 
 /* fix ussiue of dark navbar  */
@@ -14,7 +23,11 @@
   background: #fff !important;
 }
 
-.uk-navbar-container 
-{
-  color: #538000 !important;
+/* make footer stick to the bottom */
+.uk-offcanvas-content {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
 }

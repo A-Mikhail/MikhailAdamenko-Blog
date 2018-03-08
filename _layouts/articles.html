@@ -1,0 +1,24 @@
+---
+layout: default
+---
+
+<article class="uk-article uk-grid-small uk-flex uk-flex-column uk-width-auto uk-width-1-2@s uk-align-center" uk-grid>
+    <h2>Love</h2>
+    {% for item in site.love %}
+      <h4>
+        <a class="uk-link-heading" href="{{ item.url | relative_url }}">
+          {{ item.title }}
+        </a>
+      </h4>
+    {% endfor %}
+    
+    <hr class="uk-divider-icon">
+    <h2>Lua</h2>
+    {% for item in site.lua %}
+      <h4>
+        <a class="uk-link-heading" href="{{ item.url | relative_url }}">
+          {{ item.title }}
+        </a>
+      </h4>
+    {% endfor %}
+</article>

@@ -1,33 +1,67 @@
 ---
 layout: default
 ---
-  {% if site.posts.size > 0 %}
+
+<!-- For articles in _post folder -->
+{% if site.posts.size > 0 %}
   <article class="uk-article uk-grid-small uk-flex uk-flex-column uk-width-auto uk-width-1-2@s uk-align-center" uk-grid>
-      {% for post in site.posts %}
+    {% for post in site.posts %}
       <div class="uk-padding-small">
         {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
-        <h1 class="uk-article-title">
-          <a class="uk-link-reset" href="{{ post.url | relative_url }}">
-            {{ post.title | escape }}
-          </a>
-        </h1>
-        <p class="uk-article-meta"> Written by
-          <a href="#">{{ site.title | escape }}</a>
-          {{ post.date | date: date_format }}
-        </p>
+          <h1 class="uk-article-title">
+            <a class="uk-link-reset" href="{{ post.url | relative_url }}">
+              {{ post.title | escape }}
+            </a>
+          </h1>
+          
+          <p class="uk-article-meta"> Written by
+            <a href="#">{{ site.title | escape }}</a>
+            {{ post.date | date: date_format }}
+          </p>
 
-        <img class="uk-width-xlarge" src="/assets/Gimp-Love.png" alt="background-image">
-        
-        <p class="uk-text-lead">
-          {{ post.excerpt }}
-        </p>
+          <p class="uk-text-lead">
+            {{ post.excerpt }}
+          </p>
 
-        <div class="uk-grid-small uk-child-width-auto" uk-grid>
-            <div>
-                <a class="uk-button uk-button-text" href="{{ post.url | relative_url }}">Read more</a>
-            </div>
+          <div class="uk-grid-small uk-child-width-auto" uk-grid>
+              <div>
+                  <a class="uk-button uk-button-text" href="{{ post.url | relative_url }}">Read more</a>
+              </div>
+          </div>
         </div>
-      </div>
-      {% endfor %}
+    {% endfor %}
   </article>
-  {% endif %}
+{% endif %}
+
+<!-- For articles in own folders -->
+<article class="uk-article uk-grid-small uk-flex uk-flex-column uk-width-auto uk-width-1-2@s uk-align-center" uk-grid>
+  {% for collection in site.collections %}
+    {% assign name = collection.label %}
+
+    {% for page in site.[name] %}
+      <div class="uk-padding-small">
+        {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
+          <h1 class="uk-article-title">
+            <a class="uk-link-reset" href="{{ page.url | relative_url }}">
+              {{ page.title | escape }}
+            </a>
+          </h1>
+          
+          <p class="uk-article-meta"> Written by
+            <a href="#">{{ page.author | escape }}</a>
+            {{ page.date | date: date_format }}
+          </p>
+
+          <p class="uk-text-lead">
+            {{ page.excerpt }}
+          </p>
+
+          <div class="uk-grid-small uk-child-width-auto" uk-grid>
+              <div>
+                  <a class="uk-button uk-button-text" href="{{ page.url | relative_url }}">Read more</a>
+              </div>
+          </div>
+      </div>
+    {% endfor %}
+  {% endfor %}
+</article>

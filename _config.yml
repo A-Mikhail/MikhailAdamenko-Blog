@@ -2,13 +2,18 @@
 title: Mikhail Adamenko
 email: mikhail.adamenko@protonmail.com
 description: >-
-  Tutorials of different frameworks, technologies in both Russian and English languages.
+  Learn various frameworks, programming languages in easy and fun way.
 baseurl: ""
-url: "http://mikhailadamenko.design/"
+url: "https://mikhailadamenko.design/"
 github_username:  A-Mikhail
 disqus:
   shortname: mikhailadamenko
 rss: rss
+collections:
+  lua:
+    output: true
+  love:
+    output: true
 
 # Build settings
 markdown: kramdown
