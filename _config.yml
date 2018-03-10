@@ -10,8 +10,6 @@ disqus:
   shortname: mikhailadamenko
 rss: rss
 collections:
-  lua:
-    output: true
   love:
     output: true
 
