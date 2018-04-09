@@ -18,6 +18,10 @@ comments: true
   </header>
 
   <p class="uk-text-lead" temprop="articleBody">
+    {% if page.image %}
+      <img src="{{ page.image | relative_url }}"></img>
+    {% endif %}
+    
     {{ content }}
   </div>
 

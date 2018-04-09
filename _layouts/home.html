@@ -18,7 +18,11 @@ layout: default
             <a href="#">{{ site.title | escape }}</a>
             {{ post.date | date: date_format }}
           </p>
-
+ 
+          {% if page.image %}
+          <img src="{{ page.image | relative_url }}"></img>
+          {% endif %}
+          
           <p class="uk-text-lead">
             {{ post.excerpt }}
           </p>
@@ -52,6 +56,10 @@ layout: default
             {{ page.date | date: date_format }}
           </p>
 
+          {% if page.image %}
+          <img src="{{ page.image | relative_url }}"></img>
+          {% endif %}
+          
           <p class="uk-text-lead">
             {{ page.excerpt }}
           </p>

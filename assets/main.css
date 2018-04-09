@@ -1,6 +1,12 @@
+@font-face {
+  font-family: "Megrim";
+  src: url("/assets/Megrim.ttf");
+}
+
 html {
   height: 100%;
 }
+
 body {
   display: flex ;
   flex-direction: column;
@@ -13,10 +19,12 @@ body {
   color: white;
 }
 
-.ma-logo-color
+.ma-logo
 {
   color: #FF9494 !important;
+  font-family: "Megrim" !important;
 }
+
 
 /* fix ussiue of dark navbar  */
 .uk-offcanvas-bar {
