@@ -1,9 +1,9 @@
----
+<!-- ---
 layout: post
 title:  "Part 1 - Installing and Launching"
 date:   2018-03-06 22:02:48 +0600
 author: Mikhail Adamenko
----
+--- -->
 
 This part of the tutorial will be pretty short because of simplicity of installation. But still important for undestanding an environment of which I will be working.
 
