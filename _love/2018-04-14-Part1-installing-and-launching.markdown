@@ -1,11 +1,11 @@
 ---
 layout: post
 title:  "Part 1: Install, Configure, Launch"
-date:   2018-03-06 22:02:48 +0600
+date:   2018-04-14 17:09:12 +0600
 author: Mikhail Adamenko
-image: "/assets/love-tutorials/images/InstallingAndLaunching/Love-11.0.png "
+image: "/assets/love-tutorials/images/InstallingAndLaunching/Thumbnail_part1.png"
 ---
-In the [previous part](https://mikhailadamenko.design/love/2018-03-06-Into-the-love.html) of the tutorial, I described what framework LÖVE is. In this part, we will go through the installation, configuration, and launching our first window of nothingness. Also, I will mention two important files to have `main.lua` and less important `conf.lua`, as well as standard functions `load`, `update` and `draw`.
+In the [previous part](https://mikhailadamenko.design/love/2018-03-06-Part0-Into-the-love.html) of the tutorial, I described what framework LÖVE is. In this part, we will go through the installation, configuration, and launching our first window of nothingness. Also, I will mention two important files to have `main.lua` and less important `conf.lua`, as well as standard functions `load`, `update` and `draw`.
 
 The configuration for the framework I will show for Linux version, other parts of the tutorial will be work in every system as well, but I should say that installing process is simple enough.
 
@@ -26,7 +26,7 @@ To check if everything properly installed, you can launch default LÖVE applicat
 
 The result of the command should look like this:
 
-![Default window with version of the framework](/assets/love-tutorials/images/InstallingAndLaunching/Love-11.0.png "Default window of the framework")
+![Default window with version of the framework](/assets/love-tutorials/images/InstallingAndLaunching/love_11.0.png "Default window of the framework")
 
 Which is the default application of the framework, each minor version has its unique animation as well as the name, for version 11.0 it is `Mysterious Mysteries`.
 
@@ -44,16 +44,15 @@ Now, when we have the framework installed next what we will do is configuring ou
 
 Naming for all the objects including files, folders, functions, classes in this tutorial and the future will be provided as I use them, in my environment, you can safely use your own unless it's mentioned to use provided.
 
-1. Create and name a folder anywhere you like for your game, I created a folder `GOF` (Game of Life) in the home directory inside folder love: `~/love/`.
+1. Create and name a folder anywhere you like for your game, I created a folder `GOF` (Game of Life) inside `love` folder in the home directory: `~/love/`.
 
-2. Inside the folder create a file `main.lua` 
+2. Inside the folder create a file: `main.lua` 
 
     *Be aware! This file is important to have, because LÖVE will be needed it, as an entry point to your game.*
 
-3. Create second file `conf.lua` which will contain configurations for the game. 
+3. Create second file: `conf.lua` which will contain configurations for the game. 
 
-    The file is not required. The framework has its settings which will be applied if no configurations aren't given. 
-
+    The file is not required.
 
 #### main.lua
 The file `main.lua` is the main file from which our game started, the file can have any functions and variables you like, but it's also important to have these 3 functions `load`, `update` and `draw`, although the function have already defined in the source of the framework, so you can launch an application right now, if all you want is an "Untitled" black screen.
@@ -84,7 +83,7 @@ In order to show the function at work, we give our window a name, by writing in 
 
 This will set name for the window to `Game of Life!` you can launch and see the result.
 
-Next function after `load` is `update` with the following definition
+Next function after `load` is `update` with the following definition:
 
     function love.update(dt)
         -- body of the function
@@ -93,17 +92,17 @@ Next function after `load` is `update` with the following definition
     end
     
 #### update
-The [update](https://love2d.org/wiki/love.update) function useful when you want to do some action every frame, for example, increase the counter by 1 every second. To do so, you need to initialize a variable that holds value outside the function in the `load` or out of all functions.
+The [update](https://love2d.org/wiki/love.update) function useful when you want to do some action every frame, for example, increase the counter by 1 every second. To do so, you need to initialize a variable that holds value outside the function in the `load` or out of all functions:
 
     dtotal = 0   -- this keeps track of how much time has passed
 
 In the Lua all variable by default is global.
 
-Then in the function keep adding [delta time](https://en.wikipedia.org/wiki/Delta_timing) (dt) to the variable `dtotal` 
+Then in the function keep adding [delta time](https://en.wikipedia.org/wiki/Delta_timing) (dt) to the variable `dtotal`: 
 
     dtotal = dtotal + dt
 
-which is the small value around 0.01, you can check it by yourself just printing the value of `dt` in the function to the terminal
+which is the small value around 0.01, you can check it by yourself just printing the value of `dt` in the function to the terminal:
 
     function love.update(dt)
         print("value of the dt: ", dt)
@@ -133,7 +132,7 @@ First, we need to change the color of the displayed text from the default black 
 
     love.graphics.setColor(1, 1, 1, 1)
 
-This will set all preceding graphics element to be a white color. The method [setColor()](https://love2d.org/wiki/LÖVE.graphics.setColor) used range from 0 to 1 in the following order (red, green, blue, alpha), so if you want to have colors other than black (0) or white (1) you can get simple RGB value and divide each color by 255, to have exact color.
+This will set all preceding graphics element to be a white color. The method [setColor()](https://love2d.org/wiki/love.graphics.setColor) used range from 0 to 1 in the following order (red, green, blue, alpha), so if you want to have colors other than black (0) or white (1) you can get simple RGB value and divide each color by 255, to have exact color.
 
 Next, after we change our color, let's print the counter to the screen by using method [graphics.print()](https://love2d.org/wiki/love.graphics.print) with [timer.getFPS()](https://love2d.org/wiki/love.timer.getFPS) which return current fps in [number](https://love2d.org/wiki/number) value.
 
@@ -143,20 +142,24 @@ The 1st argument in `graphics.print()` method is a string `"Current FPS: "..tost
 
 The 2nd and 3rd arguments are position x, y on the screen in px.
 
+![Coord. system](/assets/love-tutorials/images/InstallingAndLaunching/Coord.png "Coord. system")
+
 In result, we get our FPS counter in the top-left corner.
 
 ![FPS counter](/assets/love-tutorials/images/InstallingAndLaunching/FPS-counter.png "FPS counter")
 
 #### conf.lua
-Briefly mention configuration file for the framework, the default setting of the file you can find [here](https://LÖVE2d.org/wiki/Config_Files). In the file, you can change the width and height of the window as well as the name, and many others parameters. The width and height can be changed later in the game, so in the file, we set default setting for the app.
+Briefly mention configuration file, there you can change values of width, height, name, or display modes of the window, as well as to turn on or off modules, the default options and their values you can find [here](https://love2d.org/wiki/Config_Files). 
+
+The framework has its own methods for each option in the file, so you can call and change it. Which means that the file isn't necessary to have, but useful if you don't want to make a mess in the code. 
 
 ### Outro
-For now, this is it, we installed the framework, created the environment and launched the application! Next, we will start to build our application for making "Conway's Game of Life", explanation of it and a few useful Lua libraries which will help us in the developing process.
+For now, this is it, we installed the framework, created the environment and launched the application! Next, we will start to configure our application for making "Conway's Game of Life", explanation of it and a few useful Lua libraries which will help us in the developing process.
 
-[Main.lua](https://github.com/A-Mikhail/Love-GameOfLife/blob/tut-part1/main.lua) and [Conf.lua](https://github.com/A-Mikhail/Love-GameOfLife/blob/tut-part1/conf.lua) written in the tutorial.
+[main.lua](https://github.com/A-Mikhail/Love-GameOfLife/blob/tut-part1/main.lua) written in the tutorial and [conf.lua](https://github.com/A-Mikhail/Love-GameOfLife/blob/tut-part1/conf.lua) with default parameters of the version 11.0.
 
 ### TL;DR
-First, we download and install the framework, then set up an environment, and at the end, simple explanation of the three main functions load, update and draw.
+First, we download and install the framework, then set up an environment, in the end, simple explanation of three main functions: load, update and draw.
 
 ### Before you move next
 I want to thank you for reading the article, hope you find it interested to read, if not or you have something to say, please leave a comment or write directly to [me](https://mikhailadamenko.design/about). I will highly appreciate every feedback you have.
