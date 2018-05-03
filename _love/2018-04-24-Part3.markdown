@@ -1,0 +1,567 @@
+---
+layout: post
+title:  "Part 3: Rooms, Rooms, Rooms!"
+date:   2018-04-24 15:41:55 +0600
+author: Mikhail Adamenko
+image: "/assets/love-tutorials/images/Rooms_Rooms_Rooms/Thumbnail_for_Part3.png"
+---
+
+### In the tutorial
+Hello, I'm Mikhail, in this part of the tutorial we will write functional Menu room with UI in it, as well as Game room in which our gameplay will happen, in the game room we will have a player as a game object. In the end, we will have an overall structure for making the game, and from which I will show how I made Conway's Game, but this will be in the next tutorial, for now, we just finish the general structure. If you have any questions about this part of the tutorial, please leave a comment.
+
+### Menu Room
+
+!["Menu Room"](/assets/love-tutorials/images/Rooms_Rooms_Rooms/Menu_room.png "Menu Room")
+
+In the previous [tutorial](https://mikhailadamenko.design/love/2018-04-15-Part2-Objects,%20Rooms%20and%20Conway's%20Rules.html), our menu wasn't the best what we can think of we have not any buttons as any proper menu usually should have instead we have some blue circle in the center of the screen! 
+
+Maybe to someone the circle can be useful for the background image, but not for us! 
+
+To get rid of the circle or not I will leave up to you at this point of the tutorial you should have some knowledge of how the framework works, as for now, let's add some buttons and actions to them. We will have two buttons Start and Quit, start button will transfer us to the Game room—which we will create in the tutorial later—while quit just quit the game, nothing fancy here.
+
+For buttons, I will use a smallest, easiest and probably not the best library was chosen at the beginning of the making my "game," called [SUIT](https://github.com/vrld/SUIT), encourage you to try different libraries for the UI, some of them you can find in the [awesome-github-list](https://github.com/love2d-community/awesome-love2d#ui) for the framework. I took the SUIT because it was pretty simple, nothing extra like dropdowns or switches I have no needs. So, if you wanted to follow the tutorials then you're a brave on, follow next steps to have the library installed. To other who chooses a different library, follow steps that probably have the library.
+
+Here begins the tutorial, take a tea and move along it. Firstly, clone or download zip file of SUIT library, unzip it and remove unneeded files from the repository like `README.md,` `suit-0.1-1.rockspec,` and folder docs, remaining files place to the `libraires` folder of the game, I as always do place them in folder called `suit`, one thing I should mention, the library as any other written for the framework use rgba colors this works until the newest "11.0" update that changed all color functions to use only values in 0-1 range, because of this many libraries will be broken until you fix them manualy, it not so hard, just take RGB range 0-255 and divide by 255, I already wrote this in one of the previous tutorials, but the repeat will not harm. 
+
+After you placed the library, call it from `main.lua`:
+
+{% highlight lua %}
+suit = require "/libraries/suit"
+{% endhighlight %}
+
+Write the `love.keypressed` function which we created in the previous tutorial and removed, inside the function forward keypresses to SUIT:
+
+{% highlight lua %}
+function love.keypressed(key)
+    suit.keypressed(key)
+end
+{% endhighlight %}
+
+In the `love.draw` draw the GUI:
+
+{% highlight lua %}
+suit.draw()
+{% endhighlight %}
+
+Go to the `Menu.lua` file, find `update` method inside it create button Start and Quit, with a statement that if the button is hit response with an action:
+
+{% highlight lua %}
+if suit.Button("Start", ).hit then
+    -- do some action
+end
+
+if suit.Button("Quit", ).hit then
+    -- quit the game
+    love.event.quit()
+end
+{% endhighlight %}
+
+This is just a structure for the button, not launch the game yet!
+ 
+The [suit.Button](http://suit.readthedocs.io/en/latest/widgets.html#Button) I think is pretty obvious, it's calles method button where the first argument is a name of the button, then it has some additions functional like change of the font which should be written in the table format after the first argument, but we will not touch this in the tutorial, what is interested for us is position of the button, you can place each button by hands by writing some values like 100, 200, after the name string, only this will be too much work if we have more than two-three buttons, better to create a [row](http://suit.readthedocs.io/en/latest/layout.html#row) from the library, for automatic arragments, the row method takes width and height as the arguments, so lets make one, after comma in the start button write:
+
+{% highlight lua %}
+suit.layout:row(buttonWidth, buttonHeight)
+{% endhighlight %}
+
+The row will set positioning and size for the first and following buttons. In the second button write:
+
+{% highlight lua %}
+suit.layout:row()
+{% endhighlight %}
+
+It will automatically apply width and height of the previous button and put it below the first.
+
+Inside the row parentheses, I wrote two variables `buttonWidth` and `buttonHeight,` define them outside the "if" statements in the `update` method, so we can rearrange button size when the screen size is changed:
+
+{% highlight lua %}
+local buttonWidth  = screenWidth / 4
+local buttonHeight = screenHeight / 14
+{% endhighlight %}
+
+Here we again have two variable and some [magic numbers](https://en.wikipedia.org/wiki/Magic_number_(programming)), begin with the two variable `screenWidth` and `screenHeight,` they take a screen size of the window constantly, in the previous tutorial we wrote the same variable for circle positioning, this time we need to remove them because they take position of the window only when room is called, if you change the window size you get off-centered circle, to have the ability of resizing screen, in the `conf.lua` change value of `t.window.resizable` from false to true: 
+
+{% highlight lua %}
+t.window.resizable = true 
+{% endhighlight %}
+
+This time we define variables in the `menu.lua` inside the callback function [love.resize](https://love2d.org/wiki/love.resize), create the function and define variables:
+
+{% highlight lua %}
+function love.resize(w, h)
+    screenWidth     = w
+    screenHeight    = h
+end
+{% endhighlight %}
+
+When the window resizes we will update our coordinates so everything will be in responsive state, at the current time we have all the varaibles we need for setting coordinates into buttons, first we need set starting point where layout will begin, to do this in the `Menu:update` method write [suit.layout.reset](http://suit.readthedocs.io/en/latest/layout.html#reset), I will set onlyt first two arguments x and y: 
+
+{% highlight lua %}
+-- Reset or define start point
+suit.layout:reset((screenWidth / 2) - (buttonWidth / 2), screenHeight / 2.5)
+{% endhighlight %}
+
+this is by no means a good code and math, but for me it's work so why to think more? Here I take half of the screen width and substract from it half of the button width so the x point will be in the center of the button, with y position this will not work,because to the buttons we can add paddings and will add them and also they are placed in row, so we can calculate overal occupied place of the buttons with all the paddings and find the center of it, but if you have two to three buttons this will be not worth the wasted time, just slam random numbers until you will be satisfied, again don't use the code above in the production, for prototyping it's ok. 
+
+About [paddings](http://suit.readthedocs.io/en/latest/layout.html#padding), add them so our button not be tied together: 
+
+{% highlight lua %}
+-- Put extra pixels between cells in y direction
+suit.layout:padding(0, 20) 
+{% endhighlight %}
+
+I added 20 pixels in y direction top and bottom, for left and right I no need in extra space, because buttons already have bunch of space.
+
+Finally! we can add our coordinates to the Start button, write after comma:
+
+{% highlight lua %}
+suit.layout:row(buttonWidth, buttonHeight)
+{% endhighlight %}
+
+and just: 
+
+{% highlight lua %}
+suit.layout:row()
+{% endhighlight %}
+
+to each new button you want to have below "Start", the final `Menu:Update` should look like this:
+
+{% highlight lua %}
+function Menu:update()
+    local buttonWidth  = screenWidth / 4
+    local buttonHeight = screenHeight / 14
+    
+    -- Reset or define start point
+    suit.layout:reset((screenWidth / 2) - (buttonWidth / 2), screenHeight / 2.5)
+
+    -- Put extra pixels between cells in y direction
+    suit.layout:padding(0, 20)  
+
+    if suit.Button("Start", suit.layout:row(buttonWidth, buttonHeight)).hit then
+        gotoRoom("Game")
+    end
+
+    if suit.Button("Quit", suit.layout:row()).hit then
+        love.event.quit()
+    end
+end
+{% endhighlight %}
+
+Everything ready, launch the game and see your buttons:
+
+!["Menu room buttons"](/assets/love-tutorials/images/Rooms_Rooms_Rooms/Menu_room_buttons.png "Menu room buttons")
+
+The "Quit" button even work! You can click and exit the game, try this incredible experience, while "Start" button will tell you that no such room as "Game" is founded and crashed it, to have such room you probably know what to do, add new object "Game" in the `rooms` folder, with expanding and basic structure of the room: 
+
+{% highlight lua %}
+Game = Object:extend()
+
+function Game:new()
+end
+
+function Game:update()
+end
+
+function Game:draw()
+end
+
+function Game:destroy()
+end
+{% endhighlight %}
+
+Don't forget to requrie it from the `main.lua`:
+
+{% highlight lua %}
+require "objects/rooms/Game"
+{% endhighlight %}
+
+Now every button we have in the menu room will work.
+
+### Game Room, Area, and Game Objects
+
+!["Game Room, Area, and Game Objects"](/assets/love-tutorials/images/Rooms_Rooms_Rooms/Game_room_area_and_game_objects.png "Game Room, Area, and Game Objects")
+
+Moving to the game room, as an example I will create a circle that would be our Player, which is a game object. Explain areas and game objects, than after we have fully functional `Area` and `GameObject` classes, in the game room we make a room transition when the player will walk out of room borders, and an infinite room so the player can go from one side of the screen to the opposite, it's useful to have if you want to make looped gameplay, but before creating a player, we should have `GameObject` class, so we can spawn them in the room, to create the class, in the folder `objects` create file `GameObject.lua` extend the object and write default structure:
+
+{% highlight lua %}
+GameObject = Object:extend()
+
+function GameObject:new()
+end
+
+function GameObject:update(dt)
+end
+
+function GameObject:draw()
+end
+
+function GameObject:destroy()
+end
+{% endhighlight %}
+
+Every game object will have an area of spawn, x and y coordinates and additional user defined options, as the arguments in the `new` method add -- area, x, y, and opts:
+
+{% highlight lua %}
+GameObject:new(area, x, y, opts)
+{% endhighlight %}
+
+inside the method parse additional options if they are available, if not object will have an empty table, create the local variable `opts` with the values of the `opts` argument or empty table otherwise:
+
+{% highlight lua %}
+local opts = opts or {}
+{% endhighlight %}
+
+if additional options was provided then parse them:
+
+{% highlight lua %}
+if opts then
+    for k, v, in pairs(opts) do
+        self[k] = v
+    end
+end
+{% endhighlight %}
+
+so we can use them in the game object itself, how I will show later, for now make object local variables for area, x and y:
+
+{% highlight lua %}
+self.area = area
+self.x = x
+self.y = y
+{% endhighlight %}
+
+The Update and Destroy method leave empty for now, and add one new local method for the class, this new method is uniqe id for each game object created, in order to differ them from one another, create:
+
+{% highlight lua %}
+function GameObject.UUID()
+end
+{% endhighlight %}
+
+and inside it just copy-and-paste following code:
+
+{% highlight lua %}
+function GameObject.UUID()
+    local fn = function(x)
+        math.randomseed(love.timer.getTime())
+
+        local r = math.random(16) - 1
+        r = (x == "x") and (r + 1) or (r % 4) + 9
+        return ("0123456789abcdef"):sub(r, r)
+    end
+
+    return (("xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"):gsub("[xy]", fn))
+end
+{% endhighlight %}
+
+This code based on the seed which is taken from current os time will generate random id that looking like this:
+
+25219cdb-0906-4bb3-86b0-c05b62c62340
+
+and finish the class with call of our `UUID` method in the `new` write:
+
+{% highlight lua %}
+self.id = self.UUID()
+{% endhighlight %}
+
+Latest you can display ids for educational purposes in the `draw` method write the following code:
+
+{% highlight lua %}
+love.graphics.setColor(0, 0, 0)
+love.graphics.print("ID: "..tostring(self.id), self.x - self.x/2, self.y - 40)
+{% endhighlight %}
+
+This will displays generated id of the future player objects, when we create them, leave the code for now, but remove as you plays enough with it. For now `GameObject` class is finished, now I should explain what is an `area` why we have it, and why game object take it as an argument.
+
+### Areas
+Area in game needed for creating, drawing, updating and interacting with the game objects inside it, the areas have no needs if in the room you will not use any game objects, like in the menu room, the room will perfectly live without having an area or any game object at all, so think of it as the manager for game objects, to have it create `Area.lua` insilde the `object` folder, with default object structure:
+
+{% highlight lua %}
+Area = Object:extend()
+
+function Area:new()
+end
+
+function Area:update(dt)
+end
+
+function Area:draw()
+end
+
+function Area:destroy()
+end
+{% endhighlight %}
+
+In the `new` method declare argument `room` which will be used for identifying its location, inside the function make local varaibles, one for the argument `room`, second is an empty table for all the game objects inside the area:
+
+{% highlight lua %}
+function Area:new(room)
+    self.room = room
+    self.game_objects = {}
+end
+{% endhighlight %}
+
+In `Area:update` we will update the game objects and have additional functional for removing dead objects, for this create `for` loop that takes existing game objects from the end so when we remove them from the table structure of the table wont be corrupted:
+
+{% highlight lua %}
+for i = #self.game_objects, 1, -1 do 
+end
+{% endhighlight %}
+
+inside loop define local variable for each game object we found:
+
+{% highlight lua %}
+local game_object = self.game_objects[i]
+{% endhighlight %}
+
+then call `update` method of the game object:
+
+{% highlight lua %}
+game_object:update(dt)
+{% endhighlight %}
+
+and add `if` condition that check if the game object is dead it removes it from the table:
+
+{% highlight lua %}
+if game_object.dead then table.remove(self.game_objects, i) end
+{% endhighlight %}
+
+Finished `Area:update` would look like this:
+
+{% highlight lua %}
+function Area:update(dt)
+    for i = #self.game_objects, 1, -1 do 
+        local game_object = self.game_objects[i]
+        game_object:update(dt) 
+    
+        if game_object.dead then table.remove(self.game_objects, i) end
+    end
+end
+{% endhighlight %}
+
+Draw method of the Area will draw game objects:
+
+{% highlight lua %}
+for _, game_object in ipairs(self.game_objects) do
+    game_object:draw()
+end
+{% endhighlight %}
+
+Now the function for managing game object or adding them into the table, create method `addGameObject` with the arguments of `game_object_type`, `x`, `y`, and `opts`: 
+
+{% highlight lua %}
+function Area:addGameObject(game_object_type, x, y, opts)
+end
+{% endhighlight %}
+
+Inside the function create variables for additional options of the game object if they provided and for game object itself, as we did with in the `gotoRoom()` function where `current_room` variable is the object for the room only instead of vararg initialize with the values of the objects or default if nothing was provided:
+
+{% highlight lua %}
+local opts = opts or {}
+
+local game_object = _G[game_object_type](self, x or 0, y or 0, opts)
+{% endhighlight %}
+
+next insert into `game_objects` table our `game_object`:
+
+{% highlight lua %}
+table.insert(self.game_objects, game_object)
+{% endhighlight %}
+
+And for `destroy` method we will have identical functional as in `update`, but with one addition, we will remove objects from the table and call `destroy` method of the game object:
+
+{% highlight lua %}
+for i = #self.game_objects, 1, -1 do
+    local game_object = self.game_objects[i]
+
+    game_object:destroy()
+
+    table.remove(self.game_objects, i)
+end
+{% endhighlight %}
+
+Finish game object and area sections, with `require` from the `main.lua`:
+
+{% highlight lua %}
+require "objects/Area"
+require "objects/GameObject"
+{% endhighlight %}
+
+This way we have basic structure for having simple game, I encourage you to write in the comment section or directly to my [email]() if something wasn't quite right in the code or especially in the writing, it's my first attempts so I for sure make mistakes, and will be glad to have a response from you.
+
+### Player
+
+!["Player](/assets/love-tutorials/images/Rooms_Rooms_Rooms/Player_banner.png "Player")
+
+Now when we have minimal structure for having game object in the game let's create our first game object - a player. Create `Player.lua` file inside the `objects` folder and fill it with the default structure for all the game object you will have in the game:
+
+{% highlight lua %}
+Player = GameObject:extend()
+
+function Player:new(area, x, y, opts)
+    Player.super.new(self, area, x, y, opts)
+end
+
+function Player:update(dt)
+    Player.super.update(self, dt)
+end
+
+function Player:draw()
+    Player.super.draw(self)
+end
+
+function Player:destroy()
+    Player.super.destroy(self)
+end 
+{% endhighlight %}
+
+This is default structure for the game objects classes, in our case for the `Player` class, first what we did is inherit the `GameObject` class instead of just `Object`, next in the `new` method constructor we have four arguments - area, x, y, and opts, send them to the `GameObject` class or parent class by adding `.super.`:
+
+{% highlight lua %}
+Player.super.new(self, area, x, y, opts)
+{% endhighlight %}
+
+make two local variablase for x and y:
+{% highlight lua %}
+self.x = x
+self.y = y
+{% endhighlight %}
+
+Important part of the `Player` class is the player itself, in the `draw` method create circle:
+{% highlight lua %}
+love.graphics.setColor(0.5, 0, 0)
+love.graphics.circle("fill", self.x, self.y, 20)
+{% endhighlight %}
+
+this will be our player for now, in order to spawn player in the `Game.lua` inside method `new` make the area:
+{% highlight lua %}
+self.area = Area(self)
+{% endhighlight %}
+
+and add game object with the following code:
+{% highlight lua %}
+self.player = self.area:addGameObject("Player", 100, 100)
+{% endhighlight %}
+
+this will add our `Player.lua` game object into the game room at position of x = 100, y = 100, so the final `Game:new()` should look like this:
+
+{% highlight lua %}
+function Game:new()
+    self.area = Area(self)
+        
+    self.player = self.area:addGameObject("Player", 100, 100)
+end
+{% endhighlight %}
+
+In the `destroy` method, destroy created area:
+
+{% highlight lua %}
+self.area:destroy()
+self.area = nil
+{% endhighlight %}
+
+**Mistake was maded!**
+
+!["Warning"](/assets/love-tutorials/images/Rooms_Rooms_Rooms/Warning_sticker.png "Warning") 
+
+In function `gotoRoom` change the order of `if` condition and variable `current_room` so the variable was below condition, this way we not destroy our room immediately when we change it from the menu to the game: 
+
+{% highlight lua %}
+function gotoRoom(room_type, ...)
+if current_room and current_room.destroy then 
+    current_room:destroy() 
+end
+
+current_room = _G[room_type](...)    
+end
+{% endhighlight %}
+
+After all of this manipulation you can launch the game and in the game room see our circle player with generated id above the circle, if something went wrong please write me or leave a comment with the error you have.
+
+For the end of this article we will play with our player. If you want more than one object at a time for example have many enemy just put the method `addGameObject` into the `for` loop:
+
+{% highlight lua %}
+for i = 1, 5 do
+    self.player = self.area:addGameObject("Player", 100 + i, 100 * i)
+end
+{% endhighlight %}
+
+In this example I placed 5 player game object one under another, you can launch the game and see that we now have 5 players with different ids.
+
+!["Players with different IDs"](/assets/love-tutorials/images/Rooms_Rooms_Rooms/Players.png "Players with different IDs")
+
+You as well can provide additional options for the game object, after the third argument which is `y` add the table with as many `key - value` as you want, for example a boolean with their well being and the name for each of them would look like this:
+
+{% highlight lua %}
+self.isAlive = true
+
+for i = 1, 5 do
+    self.player = self.area:addGameObject("Player", 100 + i, 100 * i, 
+    {["isAlive"] = self.isAlive, ["Name"] = "Jonny the "..i})
+end
+{% endhighlight %}
+
+Where you can access them from the `Player` class for example in the `new` method:
+
+{% highlight lua %}
+print("opts are: ", opts.isAlive, opts.Name)
+{% endhighlight %}
+
+which will prints value for the `isAlive` boolean and `Name`, but let's return to the player, add the control functional so we can move around the room, we already have `input` in the main file for our key, we need only bind key we want to use with the functional, in the `new` method of `Player.lua` file write:
+
+{% highlight lua %}
+self.speed = 50
+
+input:bind("w", "up")
+input:bind("a", "left")
+input:bind("s", "down")
+input:bind("d", "right")
+{% endhighlight %}
+
+and functional for the buttons in the `update` method:
+
+{% highlight lua %}
+if input:down("up") then
+    self.y = self.y - self.speed * dt        
+elseif input:down("left") then
+    self.x = self.x - self.speed * dt
+elseif input:down("down") then 
+    self.y = self.y + self.speed * dt
+elseif input:down("right") then
+    self.x = self.x + self.speed * dt
+end
+{% endhighlight %}
+
+This way we will have sloppy movements of our player when we press `wasd` buttons, if still have 5 players spawned then all five will move, for the end of article make our playground be in a loop like in Pac-Man game, I will make it for all game objects in the game, you can apply this rules only to the player, to apply loop room for game object in the `GameObject.lua` method `draw` write:
+
+{% highlight lua %}
+if self.x > love.graphics.getWidth() then 
+    self.x = self.x % love.graphics.getWidth() 
+end
+
+if self.x < 0 then 
+    self.x = love.graphics.getWidth() 
+end
+
+if self.y > love.graphics.getHeight() then 
+    self.y = self.y % love.graphics.getHeight() 
+end
+
+if self.y < 0 then 
+    self.y = love.graphics.getHeight() 
+end 
+{% endhighlight %}
+
+Now if you move out of the room borders you will appears at the opposite side.
+
+!["The End"](/assets/love-tutorials/images/Objects_RoomsAndConway's_Rules/The_End.png "The End")
+
+And as always all the files created, changed, modified in this part you can find [here](https://github.com/A-Mikhail/Love-GameOfLife/tree/tut-part3). 
+
+### TL;DR
+Was created a basic structure for making simple games, in the structure we have menu and game rooms, areas - managers for spawning, drawing, destroying and manage game objects, game object class which used as parent class for every game object in the game, and one game object a player with the simple controlls and looped room like in the Pac-Man game. 
+
+### Before you move next
+!["Leave a comment"](/assets/love-tutorials/images/Rooms_Rooms_Rooms/Leave_a_comment_banner.png "Leave a comment")
+
+I want to thank you for reading the article, hope you find it interested to read, if not or you have something to say, please leave a comment or write directly to [me](https://mikhailadamenko.design/about). I will highly appreciate every feedback you have.
+
+*Have a good day!*

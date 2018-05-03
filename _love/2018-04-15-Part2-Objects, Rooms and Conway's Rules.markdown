@@ -96,7 +96,7 @@ As we created our object, we can call it, declare and define a variable with the
     
     local sentence = Text:newObject()
 
-Call the method `sayHello()` which takes a string type:
+Call the method `sayHello` which takes a string type:
 
     sentence:sayHello("Mikhail")
 
@@ -124,7 +124,7 @@ Where the last `classic` is our file without `.lua` extension, while previous ar
 
 In the root of the game create folder `objects`, in the folder, you can save all the object files for the game, the folder isn't required but good to have so everything can be in the order. 
 
-Inside the folder create file `Text.lua` which will be our file for the object `Text`. Every object you created need to extend Object from the library Classic so we can treat it as the object, to do it, write at the beginning of the file:
+Inside the folder create file `Text.lua` which will be our file for the object `Text`. Every object you created need to extend `Object` from the library `Classic` so we can treat it as the object, to do it, write at the beginning of the file:
 
     Text = Object:extend()
 
@@ -163,7 +163,7 @@ The last step before launching, we need to require our object in the `main.lua`,
 
 Where `objects` is the folder and `Text` is the `Text.lua` file. 
 
-In the `love.load()` function, call the object we created:
+In the `love.load` function, call the object we created:
 
     function love.load()
         -- call the object in the main file    
@@ -174,11 +174,11 @@ In the `love.load()` function, call the object we created:
         sentence:sayHello("Josh")
     end
 
-Finally launch the LOVE game, in the terminal you should see two sentences with different names, or alternatively you can use Love's [graphics.print()](https://love2d.org/wiki/love.graphics.print) function to display the text on the game screen, to do it you need to remove print in method `sayHello(name)` and replace it by `return`:
+Finally launch the LÖVE game, in the terminal you should see two sentences with different names, or alternatively you can use LÖVE's [graphics.print](https://love2d.org/wiki/love.graphics.print) function to display the text on the game screen, to do it you need to remove print in method `sayHello(name)` and replace it by `return`:
 
     return self.text .. name .. self.greetingStr
 
-and in the `love.draw()` function print our text:
+and in the `love.draw` function print our text:
 
     function love.draw()
         love.graphics.setColor(1,1,1)
@@ -199,7 +199,7 @@ In every game you can see a bunch of different screens, like menu screen, settin
 
 Room size can be bigger than a window screen in this situation we can choose our camera behavior, it either, fixed at one place, which means that we see only inside the window border, and manage to change camera view when a player hit a trigger—moves outside a window border—or follow our player, of course, there are many other combinations of the camera, there we limited only by programmer imagination, for example, game "Shovel Knight"
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/jo-uuawy9Ok" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="auto" height="400" src="https://www.youtube.com/embed/jo-uuawy9Ok" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 Uses the combination of the camera view, it can show only part of the big room, while stay fixed, or follow the player, unfortunately in a `Game of Life` camera always stays fixed, so camera implementation is on you.
 
@@ -230,7 +230,7 @@ In the `Menu.lua` define `Menu` as the object:
 
     Menu = Object:extend()
 
-The standard layout for all our objects in the "Love" framework, will have a "new," "update," "draw," and "destroy" methods:
+The standard layout for all our objects in the LÖVE framework, will have a "new," "update," "draw," and "destroy" methods:
 
     function Menu:new()
     end
@@ -255,7 +255,7 @@ This will change entire screen background to white, next, so we can have our cir
 
 [graphics.getWidth](https://love2d.org/wiki/love.graphics.getWidth) and [getHeight](https://love2d.org/wiki/love.graphics.getHeight) takes visible window width and height in pixels—without any panel bars—at the moment of calling.
 
-Now on drawing the circle, in the "draw" method change the color of the circle, I choose blue:
+Now on drawing the circle, in the `draw` method change the color of the circle, I choose blue:
 
     love.graphics.setColor(0.258, 0.525, 0.956)
 
@@ -263,13 +263,13 @@ After color change, create the circle by using [graphics.circle](https://love2d.
 
     love.graphics.circle("fill", self.screenWidth / 2, self.screenHeight / 2, 100)
 
-The first argument—define the method of drawing geometry object, "fill" well, will fill a shape with the color, while "line" will draw only the border of a shape. 
+The first argument—define the method of drawing geometry object, `fill` well, will fill a shape with the color, while `line` will draw only the border of a shape. 
 
 The second and third arguments—is x and y position of the circle, I take half of the width and height of the window so the circle will be on the center screen. 
 
 The fourth argument—is a radius of the circle. 
 
-To see our circle, we need to change a room from the `main.lua` to the `menu.lua`—`main.lua` actually not a room, but LOVE framework starts with this file, so basically it's a room and not at the same time—in order to change a room we can call it directly in the `load` function, but this is not so interesting, instead we make `F1` key to be our trigger for changing room. 
+To see our circle, we need to change a room from the `main.lua` to the `menu.lua`—`main.lua` actually not a room, but LÖVE framework starts with this file, so basically it's a room and not at the same time—in order to change a room we can call it directly in the `load` function, but this is not so interesting, instead we make `F1` key to be our trigger for changing room. 
 
 In the `main.lua` require our `Menu` object:
 
